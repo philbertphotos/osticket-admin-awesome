@@ -14,9 +14,10 @@ require_once(INCLUDE_DIR.'class.export.php');       // For paper sizes
 
 if ( isset( $_REQUEST['ticketid']) != '' ) {
  
-    $sql = "UPDATE ost_ticket__cdata SET priority = '".$_REQUEST['priority']."' WHERE ticket_id = '".$_REQUEST['ticketid']."'";    
+    $sql = "UPDATE os_ticket__cdata SET priority = '".$_REQUEST['priority']."' WHERE ticket_id = '".$_REQUEST['ticketid']."'";    
+    echo $sql;
     if ( db_query($sql)) 
-        echo "success";
+        echo $sql;
 
 }
 

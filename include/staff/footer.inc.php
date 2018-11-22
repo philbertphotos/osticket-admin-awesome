@@ -49,21 +49,33 @@ if(is_object($thisstaff) && $thisstaff->isStaff()) { ?>
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>js/select2.min.js"></script>
 
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/js/tips.js"></script>
+<!--
+<script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/js/redactor.min.js"></script>-->
+<script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/js/jquery.spellchecker.js"></script>
+
+
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>js/redactor.min.js"></script>
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>js/redactor-osticket.js"></script>
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>js/redactor-plugins.js"></script>
+
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/js/jquery.translatable.js"></script>
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/js/jquery.dropdown.js"></script>
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>scp/js/bootstrap-tooltip.js"></script>
 <script type="text/javascript" src="<?php echo ROOT_PATH; ?>js/fabric.min.js"></script>
 
 <link type="text/css" rel="stylesheet" href="<?php echo ROOT_PATH; ?>scp/css/tooltip.css"/>
+
 <script type="text/javascript">
     getConfig().resolve(<?php
         include INCLUDE_DIR . 'ajax.config.php';
         $api = new ConfigAjaxAPI();
         print $api->scp(false);
     ?>);
+    
+
+    $( "#right-menu" ).click(function() {
+        $("#sidr-right").toggleClass( "mostrarmenu" );
+    });
 </script>
 <?php
 if ($thisstaff

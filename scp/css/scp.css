@@ -1,3 +1,6 @@
+html{
+    background-color: #212331 !important;
+}
 body {
   font-family: "Lato", "Helvetica Neue", arial, helvetica, sans-serif;
   font-weight: 400;
@@ -5,12 +8,41 @@ body {
   -webkit-font-smoothing:antialiased;
           font-smoothing:antialiased;
 }
-body, html {
+body {
     background:#eee;
     color:#000;
     font-size:14px;
     margin:0;
     padding:0;
+}
+
+.mostrarmenu{
+    right: 0px !important;
+}
+
+.conflictoTicket{
+    color: #128dbe;
+    cursor: pointer;
+    text-decoration: none !important;
+}
+
+.conflictoTicket:hover{
+    color: #128dbe !important;
+    cursor: pointer;
+    text-decoration: none !important;
+}
+
+
+.preview-line-hide{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.preview-line-show{
+    overflow: auto;
+    white-space: normal;
+    text-overflow: ellipsis;
 }
 
 .link,
@@ -294,9 +326,10 @@ a time {
 }
 
 #nav .inactive li a:hover {
-    color:#E65524;
+    /* color:#E65524;
     background-color: #fbfbfb;
-    background-color: rgba(0,0,0,0.05);
+    background-color: rgba(0,0,0,0.05); */
+    background-color: #f0faff;
 }
 
 #sub_nav {
@@ -680,7 +713,7 @@ a.print {
     padding: 5px;
 }
 .table.two-column tbody tr td:first-child {
-    width: 25%;
+    width: 30%;
 }
 .table > tbody > tr.header + tr td {
   padding-top: 10px;
@@ -1834,7 +1867,8 @@ input[type="button"] i,
 }
 select + .action-button,
 select + .button {
-  vertical-align: middle;
+    /* staff.php?id=2#access */
+  /* vertical-align: middle; */
 }
 .dark.button {
     background-color: rgba(0,0,0,0.5);

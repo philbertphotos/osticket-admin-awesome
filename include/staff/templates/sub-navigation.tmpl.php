@@ -23,7 +23,13 @@ if(($subnav=$nav->getSubMenu()) && is_array($subnav)){
             foreach ($item['attr'] as $name => $value)
                 $attr.=  sprintf("%s='%s' ", $name, $value);
 
-        echo sprintf('<li><a class="%s" href="%s" title="%s" id="%s" %s>%s</a></li>',
-                $class, $item['href'], $item['title'], $id, $attr, $item['desc']);
+        $submenu = explode(" ",$item['desc']);
+        $menuTexto = $item['desc'];
+        if($submenu[0] == "Abrir"){
+            $menuTexto = "Abiertos ".$submenu[1];
+        }
+
+        echo sprintf('<li><a class="%s" 33 href="%s" title="%s" id="%s" %s>%s</a></li>',
+            $class, $item['href'], $item['title'], $id, $attr, $menuTexto);
     }
 }

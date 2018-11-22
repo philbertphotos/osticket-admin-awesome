@@ -30,7 +30,10 @@ if ($lang) {
     <script type="text/javascript" src="<?php echo ROOT_PATH; ?>js/jquery-1.11.2.min.js?9ae093d"></script>
     <link rel="stylesheet" href="<?php echo ROOT_PATH ?>css/thread.css?9ae093d" media="all"/>
     <link rel="stylesheet" href="<?php echo ROOT_PATH ?>scp/css/scp.css?9ae093d" media="all"/>
+    
+    
     <link rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/redactor.css?9ae093d" media="screen"/>
+
     <link rel="stylesheet" href="<?php echo ROOT_PATH ?>scp/css/typeahead.css?9ae093d" media="screen"/>
     <link type="text/css" href="<?php echo ROOT_PATH; ?>css/ui-lightness/jquery-ui-1.10.3.custom.min.css?9ae093d"
          rel="stylesheet" media="screen" />
@@ -45,10 +48,25 @@ if ($lang) {
     <link type="text/css" rel="stylesheet" href="<?php echo ROOT_PATH; ?>css/rtl.css?9ae093d"/>
     <link type="text/css" rel="stylesheet" href="<?php echo ROOT_PATH ?>scp/css/translatable.css?9ae093d"/>
 
+    <!-- Modificaciones de CC and CCO-->   
+    <script type="text/javascript" src="<?php echo ROOT_PATH ?>scp/selectize.js/dist/js/standalone/selectize.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo ROOT_PATH ?>scp/selectize.js/dist/css/selectize.css" />
+    
+    <!--
+    <link type="text/css" rel="stylesheet" href="<?php echo ROOT_PATH ?>scp/css/redactor.css"/>-->
+    <link type="text/css" rel="stylesheet" href="<?php echo ROOT_PATH ?>scp/css/jquery.spellchecker.css"/>
+    <!--<link type="text/css" rel="stylesheet" href="<?php echo ROOT_PATH ?>scp/css/bootstrap.min.css"/>-->
+
+
+
+    
+
+
     <?php
     if($ost && ($headers=$ost->getExtraHeaders())) {
         echo "\n\t".implode("\n\t", $headers)."\n";
     }
+    
     ?>
 	<?php include ROOT_DIR . '/osta/inc/staff-head.html'; ?>	
 </head>
@@ -91,23 +109,28 @@ if ($lang) {
         </div>
 
 
-        <div id="left-logo">
+        <div id="left-logo" style="width: 327px;">
 
-            <div class="header-title">
+            <div class="header-title" style="float: left;margin-top: -6px;">
                 <a id="header-logo-title" href="<?php echo ROOT_PATH; ?>scp/">
 					<?php				
-					$file_name = ROOT_DIR ."osta/css/themes/title.txt";
-					echo file_get_contents($file_name);
-					?>  
+					// $file_name = ROOT_DIR ."osta/css/themes/title.txt";
+					// echo file_get_contents($file_name);
+                    ?>  
+                    <img src="images/logo.png">
                 </a>
             </div>
 
-            <div class="header-subtitle">
+            <div id="texto-header" class="header" style="float: left;margin-top: 4px;
+    border-left: 1px solid;
+    height: 25px;padding-top: 2px;
+    padding-left: 7px;">
                 <a id="header-logo-subtitle" href="<?php echo ROOT_PATH; ?>scp/">
 					<?php				
-					$file_name = ROOT_DIR ."osta/css/themes/subtitle.txt";
-					echo file_get_contents($file_name);
-					?>      
+					// $file_name = ROOT_DIR ."osta/css/themes/subtitle.txt";
+					// echo file_get_contents($file_name);
+                    ?>  
+                    CENTRO DE SOPORTE    
                 </a>
             </div>
         </div>
@@ -135,41 +158,41 @@ if ($lang) {
                 </button>
                 <script>
                     /* osTA */
-                    $(document).ready(function() { /* osTA */
-                        "use strict"; /* osTA */
-                        var toggles = document.querySelectorAll(".c-hamburger"); /* osTA */
-                        for (var i = toggles.length - 1; i >= 0; i--) { /* osTA */
-                            var toggle = toggles[i]; /* osTA */
-                            toggleHandler(toggle); /* osTA */
-                        }; /* osTA */
-                        function toggleHandler(toggle) { /* osTA */
-                            toggle.addEventListener("click", function(e) { /* osTA */
-                                e.preventDefault(); /* osTA */
-                                (this.classList.contains("is-active") === true) ? this.classList.remove("is-active"): this.classList.add("is-active"); /* osTA */
-                            }); /* osTA */
-                            toggle.addEventListener("touchstart", function(e) { /* osTA */
-                                e.preventDefault(); /* osTA */
-                                (this.classList.contains("is-active") === true) ? this.classList.remove("is-active"): this.classList.add("is-active"); /* osTA */
-                            }); /* osTA */
-                        } /* osTA */
-                        $('.c-hamburger').sidr({ /* osTA */
-                            name: 'sidr-right',
-                            /* osTA */
-                            side: 'right',
-                            /* osTA */
-                            body: '#content',
-                            /* osTA */
-                            displace: false /* osTA */
-                        }); /* osTA */
-                    })(); /* osTA */
+                    // $(document).ready(function() { /* osTA */
+                    //     "use strict"; /* osTA */
+                    //     var toggles = document.querySelectorAll(".c-hamburger"); /* osTA */
+                    //     for (var i = toggles.length - 1; i >= 0; i--) { /* osTA */
+                    //         var toggle = toggles[i]; /* osTA */
+                    //         toggleHandler(toggle); /* osTA */
+                    //     }; /* osTA */
+                    //     function toggleHandler(toggle) { /* osTA */
+                    //         toggle.addEventListener("click", function(e) { /* osTA */
+                    //             e.preventDefault(); /* osTA */
+                    //             (this.classList.contains("is-active") === true) ? this.classList.remove("is-active"): this.classList.add("is-active"); /* osTA */
+                    //         }); /* osTA */
+                    //         toggle.addEventListener("touchstart", function(e) { /* osTA */
+                    //             e.preventDefault(); /* osTA */
+                    //             (this.classList.contains("is-active") === true) ? this.classList.remove("is-active"): this.classList.add("is-active"); /* osTA */
+                    //         }); /* osTA */
+                    //     } /* osTA */
+                    //     $('.c-hamburger').sidr({ /* osTA */
+                    //         name: 'sidr-right',
+                    //         /* osTA */
+                    //         side: 'right',
+                    //         /* osTA */
+                    //         body: '#content',
+                    //         /* osTA */
+                    //         displace: false /* osTA */
+                    //     }); /* osTA */
+                    // })(); /* osTA */
                 </script>
             </div>
 
-        <div id="sidr-right" class="sidr right">
+        <div id="sidr-right" class="sidr right" style="transition: right 0.2s ease 0s;">
             <?php include ROOT_DIR . 'osta/inc/staff-mobile-menu.html'; ?>
         </div>    	
     <!-- END Header -->
-
+    
 
 
     <div id="pjax-container" class="<?php if ($_POST) echo 'no-pjax'; ?>">

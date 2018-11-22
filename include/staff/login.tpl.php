@@ -10,9 +10,10 @@ $info = ($_POST && $errors)?Format::htmlchars($_POST):array();
     <div id="login-title">
 		<a id="login-title-link" href="<?php echo ROOT_PATH; ?>scp/">
 			<?php				
-			$file_name = ROOT_DIR ."osta/css/themes/title.txt";
-			echo file_get_contents($file_name);
+			// $file_name = ROOT_DIR ."osta/css/themes/title.txt";
+			// echo file_get_contents($file_name);
 			?>  
+            <img src="images/logo.png">
 		</a>
 	</div>
     <h3><?php echo Format::htmlchars($msg); ?></h3>
@@ -21,9 +22,10 @@ $info = ($_POST && $errors)?Format::htmlchars($_POST):array();
         <?php csrf_token(); ?>
         <input type="hidden" name="do" value="scplogin">
         <fieldset>
-        <div id="login-userid"></div><input type="text" name="userid" id="name" value="<?php
+        <div id="login-userid"></div>
+            <input type="text" name="userid" id="name" value="<?php
             echo $info['userid']; ?>" placeholder="<?php echo __('Email or Username'); ?>"
-            autofocus autocorrect="off" autocapitalize="off">
+            autofocus autocorrect="off" autocapitalize="off" >
         <div id="login-password"></div><input type="password" name="passwd" id="pass" placeholder="<?php echo __('Password'); ?>" autocorrect="off" autocapitalize="off">
             <?php if ($show_reset && $cfg->allowPasswordReset()) { ?>
             <h3 style="display:inline"><a href="pwreset.php"><?php echo __('Forgot My Password'); ?></a></h3>

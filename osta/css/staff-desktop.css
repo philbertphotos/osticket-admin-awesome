@@ -3,10 +3,19 @@
 /*
 /*      STAFF - desktop
 */
+
+#basic_search .attached{
+    opacity: 0.9;background-color: #fff !important;
+}
+
+.page-top .attached{
+    opacity: 0.9;background-color: #fff !important;
+}
+
 table.list tbody tr:nth-child(2n+1) td {
     background-color: #ffffff;
 }
-table.list tbody tr:nth-child(4n+1) td {
+table.list tbody tr:nth-child(3n+1) td {
     background-color: #f0faff;
 }
 .orgs table.list tbody tr:nth-child(2n+1) td,
@@ -154,8 +163,11 @@ div#header a {
     padding-top: 0px;
     z-index: initial;	
 }
+/* #nav li:hover {
+    background-color: #f0faff !important;
+} */
 #sub_nav {
-    background: var(--nav-bar-bg);
+    background: var(--nav-bar-bg2);
     border: none;
     margin: 60px 0 0 0;
     padding: 0px 13px;
@@ -173,6 +185,7 @@ ul#sub_nav a.active {
 }
 #nav li.active, #nav li.inactive:hover {
     background-color: var(--header-title-color);	
+    /* background-color: #f0faff !important; */
     box-shadow: none;
     border: none;
     padding-left: initial;
@@ -185,7 +198,7 @@ ul#sub_nav a.active {
 #sub_nav a,
 #nav .active a,
 #nav .inactive a {
-    color: var(--header-title-color);
+    color: var(--header-title-color2);
 }
 #sub_nav a:hover {
     color: #153338;
@@ -207,8 +220,14 @@ ul#sub_nav a.active {
     padding: 4px 34px 4px 34px;
 }
 #nav .inactive li a:hover {
+    /* color:#f0faff; */
     color: var(--mobile-menu-bg);
 }
+
+#sub_nav li a:hover {
+    color: #f3f3f3;
+}
+
 /* ==========================================================================
  LOGO Logo replaced with earlier version 
 ========================================================================== */
@@ -312,6 +331,12 @@ div#left-logo {
 /* ==========================================================================
  HEADER NAV 
 ========================================================================== */
+/* .bglistanav:hover{
+    background-color: #f0faff !important;
+}
+.banlist a:hover{
+    background-color: #f0faff !important;
+} */
 #nav.pull-right {
 	background: initial;
     position: relative;
@@ -926,7 +951,7 @@ table.list tbody tr:nth-child(2n+1) td[style="background-color:#FEE7E7;"],
 table.list tbody tr:nth-child(2n+1) td[style="background-color:#DDFFDD;"] {
     background-color: #f0faff !important;
 }
-table.list tbody tr:nth-child(2n+1):hover td {
+table.list tbody tr:hover td {
     background: #ffe9d2 !important;
 }
 table.list tbody tr:hover td, table.list tbody tr.highlight td {
@@ -1138,7 +1163,7 @@ input[type="submit"], input[type="reset"], input[type="button"], .action-button,
     box-shadow: none;
     text-shadow: none;
     margin: 0px;
-    padding: 6px 16px;
+    padding: 5px 16px;
     color: #898989;
     background: #fff;		
     cursor: pointer;
@@ -1500,7 +1525,7 @@ form[action="#sequence/manage"] i.icon-plus {
 /* ==========================================================================
  TOOLTIPS
 ========================================================================== */
-.tooltip {
+/* .tooltip {
 	display: none;
 }
 .tooltip-inner {
@@ -1526,6 +1551,7 @@ form[action="#sequence/manage"] i.icon-plus {
     border: .5px solid #aaa;
     border-radius: 6px;
 }
+*/
 .tip_menu {
     margin: 20px 0 0 0;
     border-top: .5px solid #aaa;
@@ -1540,7 +1566,7 @@ form[action="#sequence/manage"] i.icon-plus {
     float: left;
     padding: 0 16px;
     border-right: .5px solid #ffffff;	
-}
+} 
 /* ==========================================================================
  CHECKBOX
 ========================================================================== */
@@ -3128,6 +3154,7 @@ table.form_table.fixed tbody:nth-child(3) th[colspan="2"]:nth-child(1) {
     border: 1px solid #AAA;
     border-radius: 2px;
     box-shadow: rgba(0,0,0,0.4) 0 10px 26px;
+    left: calc((100%/2) - 250px) !important;
 }
 .dialog th {
     background-color: initial;
@@ -3389,20 +3416,20 @@ div[style="width:650px; padding: 2px 2px 0 5px;"] {
  FOOTER
 ========================================================================== */
 #footer {
-    color: var(--header-title-color);
-    background: var(--nav-bar-bg);
+    color: #ffffff;
+    background: #212331;
     position: relative;
     height: 60px;
 }
 div#footer + div {
-    background: var(--nav-bar-bg) !important;
+    background:#212331!important;
     height: 36px;
     margin: -40px 0;
 }
 #footer {
     width: 100%;
-    background: var(--nav-bar-bg) !important;
-    background: rgba(0, 0, 0, 0.05);
+    background: #212331;
+    /* background: rgba(0, 0, 0, 0.05); */
     height: 60px;
     bottom: 0;
     padding: 0;	
@@ -3416,12 +3443,15 @@ div#footer + div {
     height: 100%;
     display: inline-block;
     float: left;
+    background-color: #212331;
 }
 #ostawesome {
     width: 50% !important;
     height: 100%;
     display: inline-block;
     float: right;
+    background-color: #212331;
+
 }
 #footer a {
     position: relative;
@@ -3437,7 +3467,7 @@ a#ostawesome-link {
     float: left;
 }
 #footer svg {
-    fill: var(--header-title-color);
+    fill: #fff;
     width: 122px;
 }
 #ostawesome svg {
@@ -3483,11 +3513,11 @@ a#ostawesome-link {
 ========================================================================== */
 
 #loginBody #brickwall {
-	background-image: none;
-    background: var(--header-bg) !important;
+	background-image: url(../../scp/images/fondo-login.jpg) !important;
+    /* background: var(--header-bg2) !important; */
 }
 #loginBody #loginBox {
-    box-shadow: initial;
+    /* box-shadow: initial; */
     width: 360px;
 	margin-left: -181px;
 }
@@ -3527,7 +3557,7 @@ a#login-title-link {
     display: inline;
 }
 #loginBody fieldset input {
-    background: rgba(255, 255, 255, 0.5);
+    background: #f4f6f7 !important;
 }
 #loginBody fieldset input {
     display: block;
@@ -3562,7 +3592,7 @@ input[type=password] {
     margin-bottom: 1px !important;	
 }
 #login-userid {
-    background: rgba(255, 255, 255, 0.3);
+    background:#ededed;
     display: inline-block;
     width: 36px;
     height: 37px;
@@ -3571,10 +3601,10 @@ input[type=password] {
     background-size: 22px;
     background-repeat: no-repeat;
     background-position: 7px 7px;
-background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='rgba(0%2C 0%2C 0%2C 0.1)' d='M12%2C19.2C9.5%2C19.2 7.29%2C17.92 6%2C16C6.03%2C14 10%2C12.9 12%2C12.9C14%2C12.9 17.97%2C14 18%2C16C16.71%2C17.92 14.5%2C19.2 12%2C19.2M12%2C5A3%2C3 0 0%2C1 15%2C8A3%2C3 0 0%2C1 12%2C11A3%2C3 0 0%2C1 9%2C8A3%2C3 0 0%2C1 12%2C5M12%2C2A10%2C10 0 0%2C0 2%2C12A10%2C10 0 0%2C0 12%2C22A10%2C10 0 0%2C0 22%2C12C22%2C6.47 17.5%2C2 12%2C2Z' /%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='rgba(0%2C 0%2C 0%2C 0.1)' d='M12%2C19.2C9.5%2C19.2 7.29%2C17.92 6%2C16C6.03%2C14 10%2C12.9 12%2C12.9C14%2C12.9 17.97%2C14 18%2C16C16.71%2C17.92 14.5%2C19.2 12%2C19.2M12%2C5A3%2C3 0 0%2C1 15%2C8A3%2C3 0 0%2C1 12%2C11A3%2C3 0 0%2C1 9%2C8A3%2C3 0 0%2C1 12%2C5M12%2C2A10%2C10 0 0%2C0 2%2C12A10%2C10 0 0%2C0 12%2C22A10%2C10 0 0%2C0 22%2C12C22%2C6.47 17.5%2C2 12%2C2Z' /%3E%3C/svg%3E");
 }
 #login-password {
-    background: rgba(255, 255, 255, 0.3);
+    background: #ededed;
     display: inline-block;
     width: 36px;
     height: 36px;
@@ -3609,11 +3639,11 @@ background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www
     margin: 2px 0 0 0;
     padding: 6px 20px!important;
     height: 36px;
-    background: #128dbe;
+    background:#212331;
     text-shadow: initial;
     border: none;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.4588235294117647);
+    color: #fff;
     letter-spacing: 1.5px;
     width: 100%;
     font-size: 18px;
@@ -3847,6 +3877,7 @@ i.icon-spinner:before {
   transition: transform .2s, -webkit-transform .2s;
 }
 @media screen and (min-width: 760px) {
+    
   .checkbox:hover input + span, .radio:hover input + span {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   }
@@ -4115,6 +4146,11 @@ form#header-bg {
      #one-theme, #two-theme {
          width:auto;
          float:none;
+    }
+}
+@media screen and (max-width: 980px) {
+    #texto-header{
+        display: none;
     }
 }
 a[href="theme.php?"] {

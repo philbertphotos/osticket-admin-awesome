@@ -1,4 +1,37 @@
 <?php
+
+
+$link = mysqli_connect(DBHOST, DBUSER, DBPASS, DBNAME);
+                        
+if ($link == false) {
+    die("ERROR: Could not connect. "
+                .mysqli_connect_error());
+}
+
+$sql = "SELECT id, thread_id, timestamp as hora, DATE_ADD(timestamp, INTERVAL ".$cfg->getScriptConflictTime()." MINUTE) as limite, NOW() as hora_actual FROM ".TABLE_PREFIX."thread_event WHERE data = 'notedit'";
+// print $sql;
+// exit;
+$res = mysqli_query($link, $sql);
+while ($row = mysqli_fetch_array($res)) {
+    $hora_thread = strtotime($row['hora']);
+    $hora_limite = strtotime($row['limite']);
+    $hora_actual = strtotime($row['hora_actual']);
+    if($hora_actual >= $hora_limite){
+        $sql2 ="DELETE FROM ".TABLE_PREFIX."thread_event WHERE ".TABLE_PREFIX."thread_event.id = ".$row['id'];
+        $resultado = mysqli_query($link, $sql2);
+        if($resultado){
+            // echo $row['thread_id'].": liberado...";
+            // echo "\n";
+        }else{
+            // echo $row['thread_id'].": en espera...";
+            // echo "\n";
+        }
+    }else{
+        // echo $row['thread_id'].": en espera...";
+        // echo "\n";
+    }
+
+}
 $search = SavedSearch::create();
 $tickets = TicketModel::objects();
 $clear_button = false;
@@ -522,7 +555,7 @@ return false;">
 		<!-- Head Priority -->	
 					<th class="head-priority" <?php echo $pri_sort;?>>
 						<a <?php echo $pri_sort; ?> href="tickets.php?sort=pri&order=<?php echo $negorder; ?><?php echo $qstr; ?>"
-							title="Sort By Priority <?php echo $negorder; ?>">			
+							>			
 							</a>
 					</th>
 
@@ -535,19 +568,19 @@ return false;">
 		<!-- Head Date -->            
 					<th class="head-date">
 						<a  <?php echo $date_sort; ?> href="tickets.php?sort=date&order=<?php echo $negorder; ?><?php echo $qstr; ?>"
-							title="<?php echo sprintf(__('Sort by %s %s'), __('Date'), __($negorder)); ?>"><?php echo __('Due'); ?></a>
+							><?php echo __('Date'); ?></a>
 					</th>  
 
 		<!-- Head Client -->             
 					<th class="head-client">
 						<a <?php echo $name_sort; ?> href="tickets.php?sort=name&order=<?php echo $negorder; ?><?php echo $qstr; ?>"
-							 title="<?php echo sprintf(__('Sort by %s %s'), __('Name'), __($negorder)); ?>"><?php echo __('Client');?></a>
+							 ><?php echo __('Client');?></a>
 					</th>
 
 		<!-- Head Description -->            
 					<th class="head-description">
 						 <a <?php echo $subj_sort; ?> href="tickets.php?sort=subj&order=<?php echo $negorder; ?><?php echo $qstr; ?>"
-							title="<?php echo sprintf(__('Sort by %s %s'), __('Subject'), __($negorder)); ?>"><?php echo __('Description'); ?></a>
+							><?php echo __('Description'); ?></a>
 					</th>
 
 		<!-- Head Status -->             
@@ -555,7 +588,7 @@ return false;">
 					if($search && !$status) { ?>
 						<th class="head-status">
 							<a <?php echo $status_sort; ?> href="tickets.php?sort=status&order=<?php echo $negorder; ?><?php echo $qstr; ?>"
-								title="<?php echo sprintf(__('Sort by %s %s'), __('Status'), __($negorder)); ?>"><?php echo __('Status');?></a>
+								><?php echo __('Status');?></a>
 					</th>
 
 		<!-- Head Closed By --> <!-- OR -->    
@@ -569,7 +602,7 @@ return false;">
 						if(!strcasecmp($status,'closed')) { ?>
 							<th class="head-closed-by">
 								<a <?php echo $staff_sort; ?> href="tickets.php?sort=staff&order=<?php echo $negorder; ?><?php echo $qstr; ?>"
-									title="<?php echo sprintf(__('Sort by %s %s'), __("Closing Agent's Name"), __($negorder)); ?>"><?php echo __('Closed By'); ?></a>
+									><?php echo __('Closed By'); ?></a>
 					</th> 
 		<!-- OR -->
 		<!-- Head Assigned To -->    
@@ -577,7 +610,7 @@ return false;">
 						} else { //assigned to ?>
 							<th class="head-assigned-to">
 								<a <?php echo $assignee_sort; ?> href="tickets.php?sort=assignee&order=<?php echo $negorder; ?><?php echo $qstr; ?>"
-									title="<?php echo sprintf(__('Sort by %s %s'), __('Assignee'), __($negorder)); ?>"><?php echo __('Assigned To'); ?></a>
+									><?php echo __('Assigned To'); ?></a>
 					</th>         
 		<!-- Head Department -->             
 						<?php
@@ -585,7 +618,7 @@ return false;">
 					} else { ?>
 						<th class="head-department">
 							<a <?php echo $dept_sort; ?> href="tickets.php?sort=dept&order=<?php echo $negorder;?><?php echo $qstr; ?>"
-								title="<?php echo sprintf(__('Sort by %s %s'), __('Department'), __($negorder)); ?>"><?php echo __('Dept'); ?></a>
+								><?php echo __('Dept'); ?></a>
 					</th>                
 
 					<?php
@@ -632,9 +665,29 @@ return false;">
 					$tid=sprintf('<b>%s</b>',$tid);
 				}
 				?>
+                <?php
+                if(isset($_GET['status'])){
+                    $statusLista = '&status='.$_GET['status'];
+                }else{
+                    $statusLista = '&status=open';
+                }
 
-		<!-- Table Priority -->
-				<tr id="<?php echo $T['ticket_id']; ?>">	
+                $ticket=Ticket::lookup($T['ticket_id']);
+                if($ticket->getThread()->getLogConflict($T['ticket_id'])){
+                    if($ticket->getThread()->getLogConflictUser($T['ticket_id'])){
+                        $nombreagente = "";
+                    }else{
+                        $nombreagentes = $ticket->getThread()->getLogConflictUserAgente($T['ticket_id']);
+                        $nombreagente =  $nombreagentes["username"];   
+                    }
+                }else{
+                    $nombreagente = "";
+                }
+
+            ?>
+        <!-- Table Priority  --inicio-- -->
+                <tr id="<?php echo $T['ticket_id']; ?>" class="tr_ticket_es">	
+                
 
 					<td class="cursor priority <?php echo $T['cdata__:priority__priority_desc']; ?>" style="cursor:pointer" nowrap >
 						<a style="display:block;" class="preview cursor" href="#" onclick='return false;'
@@ -672,11 +725,26 @@ return false;">
 								   <tr class="accordion-row">
 									  <td colspan="1" class="accordion-td name">
 										 <div class="inner-client-summary">
-											<!-- Table Client -->	
-											<a href="tickets.php?id=<?php echo $T['ticket_id']; ?>"><?php
+                                            <!-- Table Client -->	
+                                            <?php 
+                                                    if($nombreagente == ""){
+                                                ?>
+                                                <a href="tickets.php?id=<?php echo $T['ticket_id']; ?>"><?php
 											   $un = new UsersName($T['user__name']);
 												echo Format::htmlchars($un);
-											   ?></a></span>
+											   ?></a>
+                                                <?php
+                                                    }else{
+                                                ?>
+                                                   <a class="conflictoTicket" nombreagente="<?php echo $nombreagente; ?>"><?php
+											   $un = new UsersName($T['user__name']);
+												echo Format::htmlchars($un);
+											   ?></a> 
+                                                <?php
+                                                
+                                                    }
+                                                ?>
+											</span>
 										 </div>
 										 <div class="details">
 											<ul>
@@ -725,9 +793,22 @@ return false;">
 											   href="tickets.php?id=<?php echo $T['ticket_id']; ?>">
 											   
 											   
-												<a href="tickets.php?id=<?php echo $T['ticket_id']; ?>">
-													<?php echo $subject; ?>
-												</a>
+                                               <?php 
+                                                    if($nombreagente == ""){
+                                                ?>
+                                                <a href="tickets.php?id=<?php echo $T['ticket_id']; ?>">
+                                                    <?php echo $subject; ?>
+                                                </a>
+                                                <?php
+                                                    }else{
+                                                ?>
+                                                    <a class="conflictoTicket" nombreagente="<?php echo $nombreagente; ?>">
+                                                    <?php echo $subject; ?>
+                                                </a>  
+                                                <?php
+                                                
+                                                    }
+                                                ?>
 											   
 											   
 											   </div>
@@ -761,14 +842,41 @@ return false;">
 
 		<!-- Table Client -->				
 					<td class="table-client" nowrap><?php
-						if ($T['collab_count'])
-							echo '<span class="pull-right faded-more" data-toggle="tooltip" title="'
-								.$T['collab_count'].'"><i class="icon-group"></i></span>';
-						?><span class="truncate" style="max-width:<?php
+						if ($T['collab_count']){
+                            $ticket=Ticket::lookup($T['ticket_id']);
+                        $thread = $ticket->getThread();
+                        $collabs=$thread->getCollaborators();
+                        $colaboradores = "";
+                        $coma = '';
+                        foreach($collabs as $collab) {
+                            $colaboradores = $colaboradores.$coma.$collab->getEmail();
+                            $coma = ',&nbsp;&#10;';
+                        }
+                        echo '<span class="pull-right faded-more" data-toggle="tooltip" title="'
+								.$colaboradores.'"><i class="icon-group"></i></span>';
+                        }
+							
+                        ?>
+                        <?php 
+                            if($nombreagente == ""){
+                        ?>
+						<span class="truncate" style="max-width:<?php
 							echo $T['collab_count'] ? '150px' : '170px'; ?>"><a href="tickets.php?id=<?php echo $T['ticket_id']; ?>"><?php
 						$un = new UsersName($T['user__name']);
 							echo Format::htmlchars($un);
 						?></a></span>
+                        <?php
+                            }else{
+                        ?>
+                        <span class="truncate conflictoTicket" nombreagente="<?php echo $nombreagente; ?>" style="max-width:<?php
+							echo $T['collab_count'] ? '150px' : '170px'; ?>"><a><?php
+						$un = new UsersName($T['user__name']);
+							echo Format::htmlchars($un);
+						?></a></span>
+                        <?php
+                        
+                            }
+                        ?>
 					</td>
 
 		<!-- Table Description -->
@@ -784,10 +892,22 @@ return false;">
 						echo $base; ?>px; max-height: 1.2em"
 						class="<?php if ($flag) { ?>Icon <?php echo $flag; ?>Ticket <?php } ?>link truncate"
 						<?php if ($flag) { ?> title="<?php echo ucfirst($flag); ?> Ticket" <?php } ?>>
-						
+                        <?php 
+                            if($nombreagente == ""){
+                        ?>
 						<a href="tickets.php?id=<?php echo $T['ticket_id']; ?>">
 							<?php echo $subject; ?>
-						</a>
+                        </a>
+                        <?php
+                            }else{
+                        ?>
+                              <a class="conflictoTicket" nombreagente="<?php echo $nombreagente; ?>">
+							<?php echo $subject; ?>
+                        </a>  
+                        <?php
+                        
+                            }
+                        ?>
 						
 						</div>
 						<?php 
@@ -821,18 +941,72 @@ return false;">
 
 
 		<!-- Table ID -->
-					<td class="table-id" title="<?php echo $T['user__default_email__address']; ?>" nowrap>
-					  <a class="Icon <?php echo strtolower($T['source']); ?>Ticket preview"
-						title="Preview Ticket"
-						href="tickets.php?id=<?php echo $T['ticket_id']; ?>"
-						data-preview="#tickets/<?php echo $T['ticket_id']; ?>/preview"
-						><?php echo $tid; ?></a>
+                    <td class="table-id" title="<?php echo $T['user__default_email__address']; ?>" nowrap>
+                        <?php 
+                            if($nombreagente == ""){
+                            ?>
+                                <a class="Icon <?php echo strtolower($T['source']); ?>Ticket preview"
+                                title="Preview Ticket"
+                                href="tickets.php?id=<?php echo $T['ticket_id'].$statusLista; ?>"
+                                data-preview="#tickets/<?php echo $T['ticket_id']; ?>/preview"
+                                ><?php echo $tid; ?></a>
+                            <?php
+                            }else{
+                            ?>
+                                
+                                <span class="Icon <?php echo strtolower($T['source']); ?>Ticket preview conflictoTicket"
+                                title="Preview Ticket" 
+                                style="cursor:pointer;color: #128dbe;"
+                                nombreagente="<?php echo $nombreagente; ?>"
+                                href="tickets.php?id=<?php echo $T['ticket_id'].$statusLista; ?>"
+                                data-preview="#tickets/<?php echo $T['ticket_id']; ?>/preview"
+                                ><?php echo $tid; ?></span>
+                            <?php
+                            }
+                        ?>
 					</td>					
 
 				</tr>
 				<tr class="mobile-only-bottom-spacer">
 					<td colspan="3"></td>
-				</tr>
+                </tr>
+                <?php
+                $ticketprew=Ticket::lookup($T['ticket_id']);
+                $tcount = $ticketprew->getThreadEntries();
+                ?>
+                <?php 
+                $i=0;
+                foreach ($tcount as $EN){
+                    if($i == 0){
+                        $lineas = $EN->getBody();
+                        $i = 1;
+                    }
+                }
+
+                $allowed_tags = array("html", "body", "b", "br", "em", "hr", "i", "li", "ol", "p", "s", "span", "table", "tr", "td", "u", "ul","div");
+                $descripcion = "";
+                foreach($allowed_tags as $tag ){
+                    $descripcion = strip_tags($lineas, $tag);
+                }
+                $linea1 = substr($descripcion, 0, 300);
+                // $linea2 = substr($descripcion, 101, 202);
+                    if(($thisstaff->getDefaultPreviewTicket() == 1) || ($thisstaff->getDefaultPreviewTicket() == 2)){
+                        if($thisstaff->getDefaultPreviewTicket() == 1){
+                        $selected = "preview_1 preview-line-hide";
+                        }
+                        if($thisstaff->getDefaultPreviewTicket() == 2){
+                        $selected = "preview_1 preview-line-show";
+                        } 
+                    }else{
+                        $selected = "preview_1 preview-line-hide";
+                    }
+                
+                ?>
+                <tr id="<?php echo $T['ticket_id']; ?>">
+                <td colspan="7" class="table-date td_ticket<?php echo $T['ticket_id']; ?>" nowrap >  
+                <div class="<?php echo $selected; ?>" style="width: 891px;"><?php echo $linea1; ?></div>
+                </td>
+                </tr>
 				<?php
 				} //end of foreach
 			if (!$total)
@@ -895,3 +1069,40 @@ return false;">
      </p>
     <div class="clear"></div>
 </div>
+
+
+<div class="dialog" id="alert2" style="top: 75.2857px;
+    left: calc((100%/2) - 250px) !important;display: none;">
+    <h3><span id="title">Conflicto de tramitación de ticket</span></h3>
+    <a class="close" href=""><i class="icon-remove-circle"></i></a>
+    <hr>
+    <div id="body" style="min-height: 20px;">El ticket selecciónado ya está siendo tramitado por el agente <a id="nombreagente"></a><br>
+No es posible que dos agentes realicen operaciones sobre un mismo ticket de forma simultánea. Para más información, contacte con dicho agente</div>
+    <hr style="margin-top:3em">
+    <p class="full-width">
+        <span class="buttons pull-right">
+            <input type="button" value="ACEPTAR" class="close ok">
+        </span>
+     </p>
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+
+$('.tr_ticket_es').hover(function() {
+    id = $(this).attr('id');
+    //console.log(id);
+    $('.td_ticket'+id).css('background-color', '#fbf0e4 !important');
+    }, function() {
+    // vuelve a dejar el <div> como estaba al hacer el "mouseout"
+    $('.td_ticket'+id).css('background-color', '');
+    });
+$('.conflictoTicket').click(function(){
+    var $input = $( this );
+    nombre = $input.attr('nombreagente');
+    $('#nombreagente').text(nombre);
+    $('.dialog#alert2').css({"top": "75.2857px" , "left": "470px"});
+    $('.dialog#alert2').show();
+
+
+});
+</script>

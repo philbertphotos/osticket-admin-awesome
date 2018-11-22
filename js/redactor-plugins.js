@@ -142,7 +142,7 @@ RedactorPlugins.fontfamily = function()
 
 			dropdown.remove = { title: __('Remove Font Family'), func: that.fontfamily.reset };
 
-			var button = this.button.addBefore('bold', 'fontfamily', __('Change Font Family'));
+			var button = this.button.addBefore('bold', 'fontfamily', __('Cambiar tipo de letra'));
 			this.button.addDropdown(button, dropdown);
 
 		},
@@ -156,6 +156,100 @@ RedactorPlugins.fontfamily = function()
 		}
 	};
 };
+
+
+RedactorPlugins.spellchecker = function(){
+  return {
+		init: function ()
+		{
+			var fonts = [ 'Español', 'Inglés', 'Alemán', 'Francés','Desactivar Corrector' ];
+			var that = this;
+      var dropdown = {};
+      console.log('llamo al plugin spellchecker')
+
+			$.each(fonts, function(i, s)
+			{
+				dropdown['s' + i] = { title: '<span>' + s + '</span>', func: function() { 
+            console.log(s);
+            this.lenguaje = s;
+            this.spellchecker.toggle();
+         }};
+			});
+			var button = this.button.addBefore('spellchecker', 'Spellchecker', __('Corrector Ortográfico'));
+      this.button.addDropdown(button, dropdown);
+      
+      // var button = this.button.add('spellchecker', 'Spellchecker');
+			// this.button.addCallback(button, this.spellchecker.toggle);
+
+			// if (true) this.spellchecker.toggle();
+
+    },
+    // init: function() {
+      
+    //   this.addBtn('spellchecker', 'Spellchecker', function(obj) {
+    //     obj.toggle();
+    //   });
+    // },
+    create: function() {
+      //this.lenguaje_cod = "Inactive";
+      if(this.lenguaje == "Español"){
+        this.lenguaje_cod = "es";
+      }
+      if(this.lenguaje == "Inglés"){
+        this.lenguaje_cod = "en";
+      }
+      if(this.lenguaje == "Alemán"){
+        this.lenguaje_cod = "nl";
+      }
+      if(this.lenguaje == "Francés"){
+        this.lenguaje_cod = "fr";
+      }
+      this.spellchecker2 = new $.SpellChecker(this.$editor, {
+        lang: this.lenguaje_cod,
+        parser: 'html',
+        webservice: {
+          path: "http://pinguipastry.com.ve/spell.php",
+          driver: 'pspell'
+        },
+        suggestBox: {
+          position: 'below'
+        }
+      });
+ 
+      // Bind spellchecker handler functions
+      this.spellchecker2.on('check.success', function() {
+        alert('There are no incorrectly spelt words.');
+      });
+    },
+    toggle: function() {
+      console.log('toogle');
+      if(this.lenguaje == "Desactivar Corrector"){
+        this.spellchecker2.destroy();
+        this.spellchecker2 = null;
+        console.log('se destruyo la funcion');
+      }else{
+        if (!this.spellchecker2) {
+          //   // this.setBtnActive('spellchecker');
+            console.log('se creo la funcion para chequear el idioma');
+            this.spellchecker.create();
+            this.spellchecker2.check();
+          }else{
+            console.log('se creo la funcion para chequear el idioma 2');
+            this.spellchecker2.destroy();
+            this.spellchecker2 = null;
+            this.spellchecker.create();
+            this.spellchecker2.check();
+          } 
+      }
+        // this.spellchecker.create();
+        // this.spellchecker2.check();
+      // this.spellchecker2.check();
+      
+    }
+	};
+};
+
+
 
 RedactorPlugins.fullscreen = function()
 {
